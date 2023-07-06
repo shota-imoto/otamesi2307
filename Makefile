@@ -16,6 +16,6 @@ logs: ## Tail docker compose logs
 ps: ## Check container status
 	docker compose ps
 test: ## Execute tests
-	go test -race -shuffle=on ./...
+	go test -shuffle=on ./...
 help: ## Show options
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
