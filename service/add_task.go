@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/shota-imoto/otamesi2307/auth"
 	"github.com/shota-imoto/otamesi2307/entity"
 	"github.com/shota-imoto/otamesi2307/store"
 )
@@ -14,7 +15,12 @@ type AddTask struct {
 }
 
 func (a *AddTask) AddTask(ctx context.Context, title string) (*entity.Task, error) {
-	t := &entity.Task{Title: title, Status: entity.TaskStatusTodo}
+	id, ok := auth.GetUserID(ctx)
+	if !ok {
+		return nil, fmt.Errorf("user_id not found")
+	}
+
+	t := &entity.Task{UserID: id, Title: title, Status: entity.TaskStatusTodo}
 	err := a.Repo.AddTask(ctx, a.DB, t)
 	if err != nil {
 		return nil, fmt.Errorf("failed to register: %w", err)
